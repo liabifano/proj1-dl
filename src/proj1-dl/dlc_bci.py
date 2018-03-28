@@ -80,3 +80,4 @@ if __name__ == '__main__':
     resources_path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', '..', 'resources'))
     print('The data will be available in: {}'.format(resources_path))
     load(resources_path)
+    load(resources_path, train=False)
