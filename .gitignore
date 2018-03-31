@@ -103,5 +103,8 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+#macos files
+.DS_Store
+
 resources/
 notebooks/
