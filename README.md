@@ -10,11 +10,10 @@ bash bootstrap-python-env.sh
 
 ### Activate python env
 ```bash
-source activate proj1-dl
+source activate deep
 ```
 
-
-## Download the data
+### Run Random Seach
 ```bash
-python3 src/proj1-dl/dlc_bci.py
+python src/proj1-dl/random_search.py
 ```
