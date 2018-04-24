@@ -61,3 +61,24 @@ class Conv_net(nn.Module):
             x = self.droput_layers[index](self.batch_normalization[index](F.relu(self.additional_fc_hidden[l](x))))
         x = self.additional_fc_hidden[-1](x)
         return x
+
+
+class Net(nn.Module):
+    def __init__(self):
+        super(Net, self).__init__()
+        self.conv1 = nn.Conv2d(1, 50, kernel_size=5)
+        self.conv2 = nn.Conv2d(50, 64, kernel_size=5)
+        self.fc1 = nn.Linear(256, 200)
+        self.fc2 = nn.Linear(200, 10)
+
+    def forward(self, x) :
+        x = F.relu(F.max_pool2d(self.conv1(x), kernel_size=3, stride=3))
+        print(x.shape)
+        x = F.relu(F.max_pool2d(self.conv2(x), kernel_size=2, stride=2))
+        print(x.shape)
+        x = F.relu(self.fc1(x.view(-1, 256)))
+        print(x.shape)
+        x = self.fc2(x)
+        print(x.shape)
+
+        return x
