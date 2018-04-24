@@ -15,13 +15,18 @@ def train_model_full(network_model,
                      kfolds,
                      nb_epochs,
                      lambdda=0.01,
-                     lr=0.001):
+                     lr=0.001,
+                     verbose=False):
     acc_train_kfold = []
     loss_train_kfold = []
     acc_val_kfold = []
     loss_val_kfold = []
 
-    for train_index, val_index in kfolds.split(X):
+    for d, (train_index, val_index) in enumerate(kfolds.split(X)):
+        if verbose:
+            print('\nFold {}'.format(d))
+            print('----------------------------------------------------------------')
+
         X_train, X_val = X[train_index], X[val_index]
         y_train, y_val = y[train_index], y[val_index]
 
@@ -37,7 +42,8 @@ def train_model_full(network_model,
                                                                X_val, y_val,
                                                                mini_batch_size,
                                                                nb_epochs,
-                                                               lambdda, lr)
+                                                               lambdda, lr,
+                                                               verbose)
         acc_train_kfold.append(acc_train)
         loss_train_kfold.append(loss_train)
         acc_val_kfold.append(acc_val)
@@ -61,7 +67,8 @@ def train_model_full(network_model,
     return loss_train_kfold, loss_val_kfold, acc_train_kfold, acc_val_kfold
 
 
-def train_model(model, X_train, y_train, X_val, y_val, mini_batch_size, nb_epochs, lambdda=0.01, lr=0.001):
+def train_model(model, X_train, y_train, X_val, y_val, mini_batch_size, nb_epochs, lambdda=0.01, lr=0.001,
+                verbose=False):
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr)
 
@@ -96,6 +103,9 @@ def train_model(model, X_train, y_train, X_val, y_val, mini_batch_size, nb_epoch
             1 - compute_nb_errors(model, X_train, y_train, mini_batch_size=mini_batch_size) / X_train.size(0))
         loss_train.append(criterion(output_train, y_train).data[0])
         loss_val.append(criterion(output_val, y_val).data[0])
+
+        if verbose and (e-1) % 100 == 0:
+            print('Epoch {}, accuracy in validation: {}'.format(e, round(acc_val[-1], 3)))
 
     return loss_train, loss_val, acc_train, acc_val
 

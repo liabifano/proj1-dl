@@ -23,15 +23,16 @@ if __name__ == '__main__':
     y = train_target.numpy()
 
     costs, costs_val, acc, acc_val = train_model_full(Conv_net,
-                                                      {   'kernel_size': [4],
-                                                          'layers': [40, 2],
-                                                          'layers_conv': [28, 15],
-                                                          'p': [0.10799015707321313, 0.24230368007875924],
-                                                          'pooling_kernel_size': [2],
+                                                      {   'kernel_size': [3],
+                                                          'layers': [47, 2],
+                                                          'layers_conv': [28, 6],
+                                                          'p': [0.6115211071391998, 0.5369292224385424],
+                                                          'pooling_kernel_size': [3],
                                                           'size': 50},
                                                       X,
                                                       y,
                                                       MINI_BATCH_SIZE,
                                                       kfolds,
                                                       N_EPOCHS,
-                                                      lambdda=0.0375)
+                                                      lambdda=0.0375,
+                                                      verbose=True)
