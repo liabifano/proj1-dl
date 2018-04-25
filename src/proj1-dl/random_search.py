@@ -34,15 +34,15 @@ if __name__ == '__main__':
             # param_num_layers_fc
             num_layers_fc = np.random.randint(1, 4)
             # param_num_layers_conv
-            num_layers_conv = np.random.randint(1, 10)
+            num_layers_conv = np.random.randint(1, 4)
             layers_fc = np.random.randint(1, 50, num_layers_fc).tolist() + [2]
             layers_conv = [28] + np.random.randint(1, 20, num_layers_conv).tolist()
             kernel_size = np.random.randint(1, 8, num_layers_conv).tolist()
             pooling_kernel_size = np.random.randint(2, 4, num_layers_conv).tolist()
             p = np.random.rand(num_layers_fc + num_layers_conv).tolist()
             parameters = {
-                'lambda': np.linspace(0.01, 0.1, 30).tolist()+[0],
-                'lr': np.linspace(0.001, 0.1, 50).tolist()
+                'lambda': np.linspace(0.01, 0.05, 20).tolist()+[0],
+                'lr': np.linspace(0.0005, 0.01, 50).tolist()
             }
             lambdda = parameters['lambda'][np.random.randint(1, len(parameters['lambda']))]
             lr = parameters['lr'][np.random.randint(1, len(parameters['lr']))]
@@ -63,9 +63,12 @@ if __name__ == '__main__':
                                                               MINI_BATCH_SIZE,
                                                               kfolds,
                                                               N_EPOCHS,
-                                                              lambdda=0.0375)
+                                                              lambdda=lambdda,
+                                                              lr=lr)
 
             performances[i] = {'params': param,
+            				   'lambdda': lambdda,
+            				   'lr': lr,
                                'acc_val': acc_val,
                                'model': model_class.__name__}
 
@@ -82,6 +85,7 @@ if __name__ == '__main__':
     print('Best Model is `{}` with accuracy in validation of {} and parameters:'.format(best_model['model'], round(best_model['acc_val'][-1], 3)))
     pp = pprint.PrettyPrinter(indent=4)
     pp.pprint(best_model['params'])
+    print("lambdda {}, lr {}".format(best_model['lambdda'], best_model['lr']))
 
 
 

@@ -58,6 +58,7 @@ def train_model_full(network_model,
     pp = pprint.PrettyPrinter(indent=4)
     print('{} epochs done for `{}` with the parameters:'.format(nb_epochs, network_model.__name__))
     pp.pprint(param)
+    print("lambdda {}, lr {}".format(lambdda, lr))
     print('\n   Loss: train ~ {} Acc train ~ {} \n   Loss: val ~ {} / Acc val ~ {}'
           .format(round(loss_train_kfold[-1], 3),
                   round(acc_train_kfold[-1], 3),
