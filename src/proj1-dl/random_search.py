@@ -7,7 +7,7 @@ import dlc_bci as bci
 from networks import Conv_net
 from train import train_model_full
 
-N_RANDOM_MODELS = 50
+N_RANDOM_MODELS = 500
 MINI_BATCH_SIZE = 40
 N_FOLDS = 10
 N_EPOCHS = 100
