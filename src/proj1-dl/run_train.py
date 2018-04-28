@@ -8,7 +8,7 @@ from train import train_model
 
 MINI_BATCH_SIZE = 40
 N_FOLDS = 10
-N_EPOCHS = 1000
+N_EPOCHS = 5000
 
 if __name__ == '__main__':
     train_input, train_target = bci.load(root='./data_bci')

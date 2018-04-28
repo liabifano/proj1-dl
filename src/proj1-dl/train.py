@@ -105,7 +105,7 @@ def train_model(model, X_train, y_train, X_val, y_val, mini_batch_size, nb_epoch
         loss_val.append(criterion(output_val, y_val).data[0])
 
         if verbose and (e-1) % 100 == 0:
-            print('Epoch {}, accuracy in validation: {}'.format(e, round(acc_val[-1], 3)))
+            print('Epoch {}, accuracy in validation: {} / train {}'.format(e, round(acc_val[-1], 3), round(acc_train[-1], 3)))
 
     return loss_train, loss_val, acc_train, acc_val
 
