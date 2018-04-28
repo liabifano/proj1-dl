@@ -4,10 +4,10 @@ from logging import error
 from sklearn import model_selection
 
 import dlc_bci as bci
-from networks import Conv_net
+from networks import RNN
 from train import train_model_full
 
-N_RANDOM_MODELS = 500
+N_RANDOM_MODELS = 2
 MINI_BATCH_SIZE = 40
 N_FOLDS = 10
 N_EPOCHS = 100
@@ -31,28 +31,19 @@ if __name__ == '__main__':
     performances = {}
     for i in range(N_RANDOM_MODELS):
         try:
-            # param_num_layers_fc
-            num_layers_fc = np.random.randint(1, 4)
-            # param_num_layers_conv
-            num_layers_conv = np.random.randint(1, 4)
-            layers_fc = np.random.randint(1, 50, num_layers_fc).tolist() + [2]
-            layers_conv = [28] + np.random.randint(1, 20, num_layers_conv).tolist()
-            kernel_size = np.random.randint(1, 8, num_layers_conv).tolist()
-            pooling_kernel_size = np.random.randint(2, 4, num_layers_conv).tolist()
-            p = np.random.rand(num_layers_fc + num_layers_conv).tolist()
+            p = np.random.rand(1).tolist()[0]
+            hidden_layer = int(np.random.choice([28, 128, 256]))
             parameters = {'lambda': np.linspace(0.01, 0.1, 30).tolist() + [0],
                           'lr': np.linspace(0.001, 0.1, 50).tolist()}
             lambdda = parameters['lambda'][np.random.randint(1, len(parameters['lambda']))]
             lr = parameters['lr'][np.random.randint(1, len(parameters['lr']))]
 
-            param = {'layers': layers_fc,
-                     'layers_conv': layers_conv,
-                     'kernel_size': kernel_size,
-                     'pooling_kernel_size': pooling_kernel_size,
-                     'p': p,
-                     'size': train_input.shape[2]}
+            param = {'output_size': 1,
+                     'input_size': train_input.shape[2],
+                     'dropout': p,
+                     'hidden_size': hidden_layer}
 
-            model_class = Conv_net
+            model_class = RNN
 
             costs, costs_val, acc, acc_val = train_model_full(model_class,
                                                               param,

@@ -2,6 +2,7 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
+
 class FC_net(nn.Module):
     def __init__(self, layers):
         super(FC_net, self).__init__()
@@ -34,9 +35,9 @@ class Conv_net(nn.Module):
             self.batch_normalization.append(torch.nn.BatchNorm1d(layers_conv[l + 1]))
 
         for i in range(len(kernel_size)):
-            size-=(kernel_size[i]-1)
+            size -= (kernel_size[i] - 1)
 
-            size//=pooling_kernel_size[i]
+            size //= pooling_kernel_size[i]
 
         self.additional_fc_hidden.append(nn.Linear(size * layers_conv[-1], layers[0]))
         self.droput_layers.append(torch.nn.Dropout(p=p[l + 1]))
@@ -71,7 +72,7 @@ class Net(nn.Module):
         self.fc1 = nn.Linear(256, 200)
         self.fc2 = nn.Linear(200, 10)
 
-    def forward(self, x) :
+    def forward(self, x):
         x = F.relu(F.max_pool2d(self.conv1(x), kernel_size=3, stride=3))
         print(x.shape)
         x = F.relu(F.max_pool2d(self.conv2(x), kernel_size=2, stride=2))
@@ -82,3 +83,28 @@ class Net(nn.Module):
         print(x.shape)
 
         return x
+
+
+class RNN(nn.Module):
+    def __init__(self, input_size, output_size, hidden_size, dropout):
+        super(RNN, self).__init__()
+
+        self.input_size = input_size
+        self.output_size = output_size,
+        self.hidden_size = hidden_size
+        self.dropout = dropout
+
+        self.rnn = nn.LSTM(
+            input_size=self.input_size,
+            hidden_size=self.hidden_size,
+            num_layers=1,
+            batch_first=True,
+            dropout=self.dropout
+        )
+
+        self.out = nn.Linear(self.hidden_size, 2)
+
+    def forward(self, x):
+        out, (h_n, h_c) = self.rnn(x, None)  # zero initial hidden state
+        out = self.out(out[:, -1, :])
+        return out

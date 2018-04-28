@@ -67,7 +67,11 @@ def train_model_full(network_model,
     return loss_train_kfold, loss_val_kfold, acc_train_kfold, acc_val_kfold
 
 
-def train_model(model, X_train, y_train, X_val, y_val, mini_batch_size, nb_epochs, lambdda=0.01, lr=0.001,
+def train_model(model, X_train, y_train,
+                X_val, y_val,
+                mini_batch_size, nb_epochs,
+                lambdda=0.01, lr=0.001,
+                early_stop=False,
                 verbose=False):
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr)
@@ -106,6 +110,12 @@ def train_model(model, X_train, y_train, X_val, y_val, mini_batch_size, nb_epoch
 
         if verbose and (e-1) % 100 == 0:
             print('Epoch {}, accuracy in validation: {} / train {}'.format(e, round(acc_val[-1], 3), round(acc_train[-1], 3)))
+
+        if early_stop:
+            # if len(acc_val) > 2 and acc_val[-1] - acc_val[-2] < -0.001:
+            #     print('! Ops! Something when wrong...\nEarly stop in epoch {}'.format(e))
+            #     break
+            pass
 
     return loss_train, loss_val, acc_train, acc_val
 

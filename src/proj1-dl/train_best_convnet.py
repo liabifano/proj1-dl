@@ -8,7 +8,7 @@ from train import train_model
 
 MINI_BATCH_SIZE = 40
 N_FOLDS = 10
-N_EPOCHS = 5000
+N_EPOCHS = 1000
 
 if __name__ == '__main__':
     train_input, train_target = bci.load(root='./data_bci')
@@ -34,10 +34,10 @@ if __name__ == '__main__':
     y_val = Variable(torch.from_numpy(y_val))
 
     params = {   'kernel_size': [2],
-                 'layers': [38, 10, 2],
-                 'layers_conv': [28, 12],
-                 'p': [0.562869316924044, 0.690112553456004, 0.22976692024847756],
-                 'pooling_kernel_size': [3],
+                 'layers': [22, 2],
+                 'layers_conv': [28, 19],
+                 'p': [0.8235148994463269, 0.5220469611224193],
+                 'pooling_kernel_size': [2],
                  'size': 50}
 
     model = Conv_net(**params)
@@ -49,5 +49,7 @@ if __name__ == '__main__':
                                                  y_val,
                                                  MINI_BATCH_SIZE,
                                                  N_EPOCHS,
-                                                 lambdda=0.0375,
-                                                 verbose=True)
+                                                 lambdda=0.014210526315789474,
+                                                 lr=0.007061224489795919,
+                                                 verbose=True,
+                                                 early_stop=True)
