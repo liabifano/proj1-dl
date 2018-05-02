@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 import torch
 from sklearn import model_selection
 from torch.autograd import Variable

@@ -16,12 +16,9 @@ if __name__ == '__main__':
     train_input, train_target = bci.load(root='./data_bci')
     kfolds = model_selection.KFold(n_splits=N_FOLDS, random_state=1234, shuffle=True)
 
-    test_input, test_target = bci.load(root='./data_bci', train=False)
-
     # put this inside the train to avoid data snooping
     mu, std = train_input.mean(0), train_input.std(0)
     train_input = train_input.sub_(mu).div_(std)
-    test_input = test_input.sub_(mu).div_(std)
 
     X = train_input.numpy()
     y = train_target.numpy()
