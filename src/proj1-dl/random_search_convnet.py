@@ -10,10 +10,10 @@ from train import train_model_full
 N_RANDOM_MODELS = 500
 MINI_BATCH_SIZE = 40
 N_FOLDS = 10
-N_EPOCHS = 100
+N_EPOCHS = 500
 
 if __name__ == '__main__':
-    train_input, train_target = bci.load(root='./data_bci')
+    train_input, train_target = bci.load(root='./data_bci', one_khz=True)
     kfolds = model_selection.KFold(n_splits=N_FOLDS, random_state=1234, shuffle=True)
 
     # put this inside the train to avoid data snooping

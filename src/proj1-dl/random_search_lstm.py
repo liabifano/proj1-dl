@@ -7,21 +7,18 @@ import dlc_bci as bci
 from networks import RNN
 from train import train_model_full
 
-N_RANDOM_MODELS = 2
+N_RANDOM_MODELS = 20
 MINI_BATCH_SIZE = 40
-N_FOLDS = 10
-N_EPOCHS = 100
+N_FOLDS = 3
+N_EPOCHS = 600
 
 if __name__ == '__main__':
-    train_input, train_target = bci.load(root='./data_bci')
+    train_input, train_target = bci.load(root='./data_bci', one_khz=True)
     kfolds = model_selection.KFold(n_splits=N_FOLDS, random_state=1234, shuffle=True)
-
-    test_input, test_target = bci.load(root='./data_bci', train=False)
 
     # put this inside the train to avoid data snooping
     mu, std = train_input.mean(0), train_input.std(0)
     train_input = train_input.sub_(mu).div_(std)
-    test_input = test_input.sub_(mu).div_(std)
 
     X = train_input.numpy()
     y = train_target.numpy()
@@ -30,12 +27,12 @@ if __name__ == '__main__':
     errors = 0
     performances = {}
     for i in range(N_RANDOM_MODELS):
-        try:
+        # try:
             p = np.random.rand(1).tolist()[0]
             hidden_layer = int(np.random.choice([28, 128, 256]))
-            parameters = {'lambda': np.linspace(0.01, 0.1, 30).tolist() + [0],
+            parameters = {'lambdda': np.linspace(0.01, 0.1, 30).tolist() + [0],
                           'lr': np.linspace(0.001, 0.1, 50).tolist()}
-            lambdda = parameters['lambda'][np.random.randint(1, len(parameters['lambda']))]
+            lambdda = parameters['lambdda'][np.random.randint(1, len(parameters['lambdda']))]
             lr = parameters['lr'][np.random.randint(1, len(parameters['lr']))]
 
             param = {'output_size': 1,
@@ -58,10 +55,10 @@ if __name__ == '__main__':
             performances[i] = {'params': param,
                                'acc_val': acc_val,
                                'model': model_class.__name__}
-
-        except:
-            errors += 1
-            error('Fit fail')
+        #
+        # except:
+        #     errors += 1
+        #     error('Fit fail')
 
     best_position = np.argmax([p['acc_val'][-1] for p in performances.values()])
     best_model = performances[[*performances][best_position]]

@@ -22,7 +22,6 @@ if __name__ == '__main__':
     test_input = Variable(test_input)
     test_target = Variable(test_target)
 
-
     path_to_consume = os.path.join(TRAIN_MODEL_PATH, sys.argv[1])
     print('Reading from {}'.format(path_to_consume))
 

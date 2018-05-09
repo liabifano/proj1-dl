@@ -37,7 +37,7 @@ def train_model_full(network_model,
 
         model = network_model(**param)
 
-        loss_train, loss_val, acc_train, acc_val = train_model(model,
+        loss_train, loss_val, acc_train, acc_val, _ = train_model(model,
                                                                X_train, y_train,
                                                                X_val, y_val,
                                                                mini_batch_size,
@@ -117,7 +117,7 @@ def train_model(model, X_train, y_train,
             #     break
             pass
 
-    return loss_train, loss_val, acc_train, acc_val
+    return loss_train, loss_val, acc_train, acc_val, model
 
 
 def train_parallel(param):
