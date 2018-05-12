@@ -65,6 +65,7 @@ Best Model is `Conv_net` with accuracy in validation of 0.778 and parameters:
     'pooling_kernel_size': [3],
     'size': 50}
 
+convnet_2
 !!!!!!!!!!!!!!!!!!!!!!!! AAAAAAAAANNNNNNNNDDD THE BEST MODEL ISSSSSSS!!!!!
 Best Model is `Conv_net` with accuracy in validation of 0.804 and parameters:
 {   'kernel_size': [3],
@@ -92,7 +93,7 @@ Best Model is `Conv_net` with accuracy in validation of 0.766 and parameters:
     'pooling_kernel_size': [3],
     'size': 50}
 
-
+convnet_1
 Best Model is `Conv_net` with accuracy in validation of 0.8 and parameters:
 {   'kernel_size': [2],
     'layers': [22, 2],

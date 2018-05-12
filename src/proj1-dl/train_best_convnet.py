@@ -10,7 +10,7 @@ from train import train_model
 
 MINI_BATCH_SIZE = 40
 N_FOLDS = 10
-N_EPOCHS = 2
+N_EPOCHS = 1000
 TRAIN_MODEL_PATH = os.path.join(os.path.abspath(os.path.join(__file__, '..')), 'trained_models')
 
 if __name__ == '__main__':
@@ -32,11 +32,11 @@ if __name__ == '__main__':
     y_train = Variable(torch.from_numpy(y_train))
     y_val = Variable(torch.from_numpy(y_val))
 
-    params = {'kernel_size': [2],
-              'layers': [22, 2],
-              'layers_conv': [28, 19],
-              'p': [0.8235148994463269, 0.5220469611224193],
-              'pooling_kernel_size': [2],
+    params = {'kernel_size': [3],
+              'layers': [47, 2],
+              'layers_conv': [28, 6],
+              'p': [0.6115211071391998, 0.5369292224385424],
+              'pooling_kernel_size': [3],
               'size': 50}
 
     model = Conv_net(**params)

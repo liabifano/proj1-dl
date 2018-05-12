@@ -9,11 +9,11 @@ from train import train_model_full
 
 N_RANDOM_MODELS = 20
 MINI_BATCH_SIZE = 40
-N_FOLDS = 3
+N_FOLDS = 10
 N_EPOCHS = 600
 
 if __name__ == '__main__':
-    train_input, train_target = bci.load(root='./data_bci', one_khz=True)
+    train_input, train_target = bci.load(root='./data_bci')
     kfolds = model_selection.KFold(n_splits=N_FOLDS, random_state=1234, shuffle=True)
 
     # put this inside the train to avoid data snooping
@@ -50,7 +50,7 @@ if __name__ == '__main__':
                                                               kfolds,
                                                               N_EPOCHS,
                                                               lambdda=lambdda,
-                                                              lr=lr)
+                                                              lr=lr, verbose=True)
 
             performances[i] = {'params': param,
                                'acc_val': acc_val,

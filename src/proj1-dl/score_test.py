@@ -14,7 +14,6 @@ if __name__ == '__main__':
         sys.exit(1)
 
     train_input, train_target = bci.load(root='./data_bci')
-    # put this inside the train to avoid data snooping
     mu, std = train_input.mean(0), train_input.std(0)
 
     test_input, test_target = bci.load(root='./data_bci', train=False)
