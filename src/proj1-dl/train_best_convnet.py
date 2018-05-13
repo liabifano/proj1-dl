@@ -32,12 +32,12 @@ if __name__ == '__main__':
     y_train = Variable(torch.from_numpy(y_train))
     y_val = Variable(torch.from_numpy(y_val))
 
-    params = {'kernel_size': [3],
-              'layers': [47, 2],
-              'layers_conv': [28, 6],
-              'p': [0.6115211071391998, 0.5369292224385424],
-              'pooling_kernel_size': [3],
-              'size': 50}
+    params = {   'kernel_size': [1, 2],
+                 'layers': [15, 2],
+                 'layers_conv': [28, 14, 16],
+                 'p': [0.10271629346726219, 0.1647674882927611, 0.768123866247771],
+                 'pooling_kernel_size': [3, 3],
+                 'size': 50}
 
     model = Conv_net(**params)
 
@@ -48,10 +48,11 @@ if __name__ == '__main__':
                                                         y_val,
                                                         MINI_BATCH_SIZE,
                                                         N_EPOCHS,
-                                                        lambdda=0.014210526315789474,
-                                                        lr=0.007061224489795919,
+                                                        lambdda=0.01, lr=0.001,
                                                         verbose=True,
                                                         early_stop=True)
+
+    import pdb; pdb.set_trace()
 
     if len(sys.argv) > 2 and sys.argv[1] == 'saveme':
         path_to_save = os.path.join(TRAIN_MODEL_PATH, sys.argv[2] + '.pth')

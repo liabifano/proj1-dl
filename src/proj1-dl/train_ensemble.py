@@ -8,14 +8,8 @@ from sklearn.model_selection import RandomizedSearchCV
 from torch.autograd import Variable
 
 import dlc_bci as bci
-from utils import predict_classes
+from utils import predict_classes, predict_scores
 
-param_dist = {"max_depth": [3, None],
-              "max_features": sp_randint(1, 2),
-              "min_samples_split": sp_randint(2, 11),
-              "min_samples_leaf": sp_randint(1, 11),
-              "bootstrap": [True, False],
-              "criterion": ["gini", "entropy"]}
 
 TRAIN_MODEL_PATH = os.path.join(os.path.abspath(os.path.join(__file__, '..')), 'trained_models')
 
@@ -35,11 +29,12 @@ if __name__ == '__main__':
 
     models = [torch.load(x) for x in path_models]
 
-    preds_train_1 = [predict_classes(m, train_input, 50) for m in models]
-    preds_test_1 = [predict_classes(m, test_input, 50) for m in models]
+    preds_train_1 = [predict_scores(m, train_input, 50) for m in models]
+    preds_test_1 = [predict_scores(m, test_input, 50) for m in models]
 
-    preds_train_1 = np.transpose(np.vstack(preds_train_1))
-    preds_test_1 = np.transpose(np.vstack(preds_test_1))
+    preds_train_1 = np.hstack(preds_train_1)
+    preds_test_1 = np.hstack(preds_test_1)
+
 
     param_dist = {"max_depth": [3, None],
                   "max_features": sp_randint(1, preds_train_1.shape[1]),
@@ -48,10 +43,10 @@ if __name__ == '__main__':
                   "bootstrap": [True, False],
                   "criterion": ["gini", "entropy"]}
 
-    clf = RandomForestClassifier(n_estimators=20)
+    clf = RandomForestClassifier(n_estimators=1000)
     random_search = RandomizedSearchCV(clf,
                                        param_distributions=param_dist,
-                                       n_iter=1000)
+                                       n_iter=200)
     random_search.fit(preds_train_1, train_target.data.numpy())
     best_clf = random_search.best_estimator_
     final_preds = best_clf.predict(preds_test_1)

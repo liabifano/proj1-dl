@@ -44,19 +44,26 @@ def predict_classes(model, data_input, mini_batch_size):
 
 def predict_scores(model, data_input, mini_batch_size):
     # change it
-    preds = np.zeros((0,))
+    preds = np.zeros((0, 2))
 
     for b in range(0, data_input.size(0), mini_batch_size):
         if b + mini_batch_size <= data_input.size(0):
             output = model(data_input.narrow(0, b, mini_batch_size))
-            predicted_scores, _ = torch.max(output.data, 1)
+            predicted_scores, predicted_classes = torch.max(output.data, 1)
             predicted_scores = Variable(predicted_scores).data.numpy()
+            predicted_classes = Variable(predicted_classes).data.numpy()
+            predicted = np.concatenate([predicted_classes.reshape((len(predicted_classes), 1)),
+                                        predicted_scores.reshape((len(predicted_scores), 1))], axis=1)
+
 
         else:
             output = model(data_input.narrow(0, b, data_input.size(0) - b))
-            predicted_scores, _ = torch.max(output.data, 1)
+            predicted_scores, predicted_classes = torch.max(output.data, 1)
             predicted_scores = Variable(predicted_scores).data.numpy()
+            predicted_classes = Variable(predicted_classes).data.numpy()
+            predicted = np.concatenate([predicted_classes.reshape((len(predicted_classes), 1)),
+                                        predicted_scores.reshape((len(predicted_scores), 1))], axis=1)
 
-        preds = np.concatenate([preds, predicted_scores], axis=0)
+        preds = np.concatenate([preds, predicted], axis=0)
 
     return preds
