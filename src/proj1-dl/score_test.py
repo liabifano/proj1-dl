@@ -9,6 +9,15 @@ from utils import compute_nb_errors
 TRAIN_MODEL_PATH = os.path.join(os.path.abspath(os.path.join(__file__, '..')), 'trained_models')
 
 if __name__ == '__main__':
+    """
+    Score test set based on saved model in `trained_models`. 
+    To run it you must specify a valide saved model name in the folder.
+    
+    1. Download train and test
+    2. Normalize test based on train mean and standard desviation
+    3. Score test
+    4. Print score in the screen
+    """
     if len(sys.argv) < 2:
         print('You must specify the saved model name')
         sys.exit(1)

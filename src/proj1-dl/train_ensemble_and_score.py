@@ -14,6 +14,16 @@ from utils import predict_classes, predict_scores
 TRAIN_MODEL_PATH = os.path.join(os.path.abspath(os.path.join(__file__, '..')), 'trained_models')
 
 if __name__ == '__main__':
+    """
+    Train ensemble model and evaluate it in the test set
+    
+    1. Download specified saved models in the list `models`
+    2. Normalize train and test
+    3. Calculate predictions on train and test
+    4. Performe a random search using RandomForest classifier where the inputs are 
+    the neural network's predictions and the labels are the usual labels
+    5. Print test performance in the screen
+    """
     models = ['convnet_1', 'convnet_2']
     path_models = [os.path.join(TRAIN_MODEL_PATH, x + '.pth') for x in models]
 
@@ -51,4 +61,4 @@ if __name__ == '__main__':
     best_clf = random_search.best_estimator_
     final_preds = best_clf.predict(preds_test_1)
 
-    print(accuracy_score(test_target.data.numpy(), final_preds))
+    print('Final performance on test: {}'.format(accuracy_score(test_target.data.numpy(), final_preds)))

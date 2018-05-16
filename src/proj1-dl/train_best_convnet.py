@@ -14,9 +14,17 @@ N_EPOCHS = 1000
 TRAIN_MODEL_PATH = os.path.join(os.path.abspath(os.path.join(__file__, '..')), 'trained_models')
 
 if __name__ == '__main__':
+    """
+    Train Convolutational Network 
+    
+    1. Download train
+    2. Select validation set
+    3. Fit neural network in the train set
+    4. Evaluate the model in the validation set
+    5. Save the model if necessary
+    """
     train_input, train_target = bci.load(root='./data_bci')
 
-    # put this inside the train to avoid data snooping
     mu, std = train_input.mean(0), train_input.std(0)
     train_input = train_input.sub_(mu).div_(std)
 

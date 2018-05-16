@@ -11,6 +11,14 @@ N_FOLDS = 10
 N_EPOCHS = 1000
 
 if __name__ == '__main__':
+    """
+    Train simple neural network 
+    
+    1. Download train
+    2. Select validation set
+    3. Fit neural network in the train set
+    4. Evaluate the model in the validation set
+    """
     train_input, train_target = bci.load(root='./data_bci')
     kfolds = model_selection.KFold(n_splits=N_FOLDS, random_state=1234, shuffle=True)
 

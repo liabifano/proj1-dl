@@ -4,6 +4,15 @@ from torch.autograd import Variable
 
 
 def compute_nb_errors(model, data_input, data_target, mini_batch_size):
+    """
+    Computer model's errors
+
+    :param model: fitted neural network
+    :param data_input: tensor with input
+    :param data_target: tensor with input
+    :param mini_batch_size: integer with batch size
+    :return:
+    """
     nb_data_errors = 0
 
     for b in range(0, data_input.size(0), mini_batch_size):
@@ -24,6 +33,14 @@ def compute_nb_errors(model, data_input, data_target, mini_batch_size):
 
 
 def predict_classes(model, data_input, mini_batch_size):
+    """
+    Get predictions of model
+
+    :param model: fitted neural network
+    :param data_input: tensor with input
+    :param mini_batch_size: integer with batch size
+    :return: array of 0-1
+    """
     preds = np.zeros((0,))
 
     for b in range(0, data_input.size(0), mini_batch_size):
@@ -43,7 +60,14 @@ def predict_classes(model, data_input, mini_batch_size):
 
 
 def predict_scores(model, data_input, mini_batch_size):
-    # change it
+    """
+    Get predictions of model and model's output
+
+    :param model: fitted neural network
+    :param data_input: tensor with input
+    :param mini_batch_size: integer with batch size
+    :return: array with 0-1 and neural network output
+    """
     preds = np.zeros((0, 2))
 
     for b in range(0, data_input.size(0), mini_batch_size):

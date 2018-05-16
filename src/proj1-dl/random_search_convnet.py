@@ -13,10 +13,17 @@ N_FOLDS = 10
 N_EPOCHS = 500
 
 if __name__ == '__main__':
+    """
+    Random search for convolutational neural network
+    
+    1. Download train
+    2. Create folds based on train
+    3. Run different models, grab random parameters possibilities and print its performance in the screen
+    4. Select best model over the interactions 
+    """
     train_input, train_target = bci.load(root='./data_bci', one_khz=True)
     kfolds = model_selection.KFold(n_splits=N_FOLDS, random_state=1234, shuffle=True)
 
-    # put this inside the train to avoid data snooping
     mu, std = train_input.mean(0), train_input.std(0)
     train_input = train_input.sub_(mu).div_(std)
 

@@ -17,6 +17,21 @@ def train_model_full(network_model,
                      lambdda=0.01,
                      lr=0.001,
                      verbose=False):
+    """
+    Train k neural networks, where k is the number of folds
+
+    :param network_model: class with the neural network
+    :param param: parameters to instanciate the network_model
+    :param X: array with input
+    :param y: array with labels
+    :param mini_batch_size: integer with mini batch size
+    :param kfolds: list of lists with folds positions for train / validation
+    :param nb_epochs: integer with number of epochs
+    :param lambdda: lambda parameter to run the neural network
+    :param lr: learning rate to run the neural network
+    :param verbose: boolean if it is needed to be verbose
+    :return: 4 lists with {avg loss in train, avg loss in validation, avg accuracy in train, avg accuracy in validation}
+    """
     acc_train_kfold = []
     loss_train_kfold = []
     acc_val_kfold = []
@@ -38,12 +53,12 @@ def train_model_full(network_model,
         model = network_model(**param)
 
         loss_train, loss_val, acc_train, acc_val, _ = train_model(model,
-                                                               X_train, y_train,
-                                                               X_val, y_val,
-                                                               mini_batch_size,
-                                                               nb_epochs,
-                                                               lambdda, lr,
-                                                               verbose)
+                                                                  X_train, y_train,
+                                                                  X_val, y_val,
+                                                                  mini_batch_size,
+                                                                  nb_epochs,
+                                                                  lambdda, lr,
+                                                                  verbose)
         acc_train_kfold.append(acc_train)
         loss_train_kfold.append(loss_train)
         acc_val_kfold.append(acc_val)
@@ -73,6 +88,22 @@ def train_model(model, X_train, y_train,
                 lambdda=0.01, lr=0.001,
                 early_stop=False,
                 verbose=False):
+    """
+    Fit neural network and evaluate it in a validation set
+
+    :param model: neural network object
+    :param X_train: tensor with inputs of train
+    :param y_train: tensor with outputs of train
+    :param X_val: tensor with inputs of validation
+    :param y_val: tensor with outputs of validation
+    :param mini_batch_size: integer with mini batch size
+    :param nb_epochs: integer with the number of epochs
+    :param lambdda: lambda parameter to run the neural network
+    :param lr: learning rate to run the neural network
+    :param early_stop: if it is needed early stop
+    :param verbose: boolean if it is needed to be verbose
+    :return: 4 lists with {loss in train, loss in validation, accuracy in train, accuracy in validation} and fitted model
+    """
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr)
 
@@ -108,8 +139,9 @@ def train_model(model, X_train, y_train,
         loss_train.append(criterion(output_train, y_train).data[0])
         loss_val.append(criterion(output_val, y_val).data[0])
 
-        if verbose and (e-1) % 100 == 0:
-            print('Epoch {}, accuracy in validation: {} / train {}'.format(e, round(acc_val[-1], 3), round(acc_train[-1], 3)))
+        if verbose and (e - 1) % 100 == 0:
+            print(
+            'Epoch {}, accuracy in validation: {} / train {}'.format(e, round(acc_val[-1], 3), round(acc_train[-1], 3)))
 
         if early_stop:
             # if len(acc_val) > 2 and acc_val[-1] - acc_val[-2] < -0.001:
