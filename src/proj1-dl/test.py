@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import pprint
 import torch
 from scipy.stats import randint as sp_randint
 from sklearn.ensemble import RandomForestClassifier
@@ -8,8 +9,7 @@ from sklearn.model_selection import RandomizedSearchCV
 from torch.autograd import Variable
 
 import dlc_bci as bci
-from utils import predict_classes, predict_scores
-
+from utils import predict_scores
 
 TRAIN_MODEL_PATH = os.path.join(os.path.abspath(os.path.join(__file__, '..')), 'trained_models')
 
@@ -26,6 +26,7 @@ if __name__ == '__main__':
     """
     models = ['convnet_1', 'convnet_2']
     path_models = [os.path.join(TRAIN_MODEL_PATH, x + '.pth') for x in models]
+    print('>>>> Reading models {} from {}\n'.format(str(models), TRAIN_MODEL_PATH))
 
     train_input, train_target = bci.load(root='./data_bci')
     mu, std = train_input.mean(0), train_input.std(0)
@@ -45,7 +46,7 @@ if __name__ == '__main__':
     preds_train_1 = np.hstack(preds_train_1)
     preds_test_1 = np.hstack(preds_test_1)
 
-
+    print('\n>>>> Searching for a good Random Forest model...')
     param_dist = {"max_depth": [3, None],
                   "max_features": sp_randint(1, preds_train_1.shape[1]),
                   "min_samples_split": sp_randint(2, 11),
@@ -53,12 +54,16 @@ if __name__ == '__main__':
                   "bootstrap": [True, False],
                   "criterion": ["gini", "entropy"]}
 
-    clf = RandomForestClassifier(n_estimators=1000)
+    clf = RandomForestClassifier(n_estimators=100)
     random_search = RandomizedSearchCV(clf,
                                        param_distributions=param_dist,
-                                       n_iter=200)
+                                       n_iter=100)
     random_search.fit(preds_train_1, train_target.data.numpy())
     best_clf = random_search.best_estimator_
+    print('\n>>>> Best Random Forest found:')
+    pp = pprint.PrettyPrinter(indent=10, width=80, depth=None, stream=None)
+    pp.pprint(best_clf.get_params())
     final_preds = best_clf.predict(preds_test_1)
 
-    print('Final performance on test: {}'.format(accuracy_score(test_target.data.numpy(), final_preds)))
+    print('\n>>>> Final performance on test: {}\n\nBonne journée =)!'.format(
+        accuracy_score(test_target.data.numpy(), final_preds)))

@@ -3,6 +3,8 @@
 Implement a neural network to predict the laterality of finger movement
 (left or right) from the EEG recording
 
+Ana Stanojevic (ana-stanojevic), Artem Shevchenko (artem-s-shevchenko), Liamarcia Bifano (liabifano)
+
 ### Bootstrap python env
 ```bash
 bash bootstrap-python-env.sh
@@ -16,7 +18,7 @@ source activate deep
 ### To run and get the final performance
 ```bash
 source activate deep
-python src/proj1-dl/train_ensemble_and_score.py 
+python src/proj1-dl/test.py 
 ```
 
 
@@ -35,7 +37,7 @@ python src/proj1-dl/train_ensemble_and_score.py
 
 `src/proj1-dl/train_dummy_net.py:` train the simplest model, neural network with one layer
 
-`src/proj1-dl/train_ensemble_and_score.py:` loads models, performs random search in Random Forest and score the test set
+`src/proj1-dl/test.py:` loads models, performs random search in Random Forest and score the test set
 
 `src/proj1-dl/score_test.py:` loads a saved model and score the test set
 
